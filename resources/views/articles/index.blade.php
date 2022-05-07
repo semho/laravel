@@ -8,6 +8,11 @@
         <h3 class="pb-3 mb-4 font-italic border-bottom">
             Список статей
         </h3>
+        @if(Session::has('info'))
+            <div class="alert alert-success">
+                {{Session::get('info')}}
+            </div>
+        @endif
 
         @foreach($articles as $article)
             @include('articles.item')
