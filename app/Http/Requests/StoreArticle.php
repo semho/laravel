@@ -31,8 +31,9 @@ class StoreArticle extends FormRequest
                 'regex:/^[-_0-9a-z]+$/i',
                 Rule::unique('articles')->ignore($this->get('slug'), 'slug'),
             ],
-            'desc' => 'required|max:255',
+            'description' => 'required|max:255',
             'text' => 'required',
+            'is_published' => 'nullable'
         ];
     }
 

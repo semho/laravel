@@ -30,18 +30,9 @@ class ArticlesController extends Controller
 
     public function store(StoreArticle $request)
     {
-        $request->validated();
+        $attributes = $request->validated();
 
-        $article = new Article();
-        $article->name = request('name');
-        $article->slug = request('slug');
-        $article->description = request('desc');
-        $article->text = request('text');
-        $article->is_published = 1;
-        if (request('published') != 'on') {
-            $article->is_published = 0;
-        }
-        $article->save();
+        Article::create($attributes);
 
         return redirect('/')->with('info', 'Статья успешно создана');
     }
@@ -55,17 +46,8 @@ class ArticlesController extends Controller
     public function update($slug, StoreArticle $request)
     {
         $article = Article::where('slug', $slug)->first();
-        $request->validated();
-
-        $article->name = request('name');
-        $article->slug = request('slug');
-        $article->description = request('desc');
-        $article->text = request('text');
-        $article->is_published = 1;
-        if (request('published') != 'on') {
-            $article->is_published = 0;
-        }
-        $article->save();
+        $attributes = $request->validated();
+        $article->update($attributes);
 
         return redirect('/')->with('info', 'Статья успешно обновлена');
     }

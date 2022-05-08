@@ -23,11 +23,11 @@
     <label for="inputDesc">Краткое описание</label>
     <input
         type="text"
-        name="desc"
+        name="description"
         class="form-control"
         id="inputDesc"
         placeholder="Введите краткое описание"
-        value="{{ old('desc', $article->description ?? '') }}"
+        value="{{ old('description', $article->description ?? '') }}"
     >
 </div>
 <div class="form-group">
@@ -42,11 +42,13 @@
     </textarea>
 </div>
 <div class="form-group form-check">
+    <input type="hidden" name="is_published" value="0" >
     <input
         type="checkbox"
         class="form-check-input"
         id="publishedCheckbox"
-        name="published"
+        name="is_published"
+        value="1"
         @if (isset($article->is_published) && $article->is_published == 1)
             checked
         @endif
