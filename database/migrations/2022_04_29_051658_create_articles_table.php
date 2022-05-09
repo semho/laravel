@@ -19,7 +19,7 @@ class CreateArticlesTable extends Migration
             $table->string('slug');
             $table->string('description');
             $table->text('text');
-            $table->tinyInteger('is_published')->default('1');
+            $table->tinyInteger('is_published');
             $table->timestamps();
         });
     }

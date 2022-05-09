@@ -14,17 +14,12 @@ class ContactsController extends Controller
 
     public function store()
     {
-        $this->validate(request(), [
+        $attributes = request()->validate([
             'email' => 'required|email:rfc,dns',
             'message' => 'required',
         ]);
 
-        $notification = new Notification();
-
-        $notification->email = request('email');
-        $notification->message = request('message');
-
-        $notification->save();
+        Notification::create($attributes);
 
         return redirect('/');
     }
