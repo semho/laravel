@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticle;
-use Illuminate\Http\Request;
 use App\Models\Article;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
+use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
     public function index()
     {
-        $articles = Article::latest()->get();
+        $articles = Article::with('tags')->latest()->get();
         return view('articles.index', compact('articles'));
     }
 
@@ -28,11 +25,17 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(StoreArticle $request)
+    public function store(StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
         $attributes = $request->validated();
 
-        Article::create($attributes);
+        $article = Article::create($attributes);
+
+        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) {
+            return $item;
+        });
+
+        $tagsSynchronizer->sync($tags, $article);
 
         return redirect('/')->with('info', 'Статья успешно создана');
     }
@@ -43,11 +46,18 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update($slug, StoreArticle $request)
+    public function update($slug, StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
+
         $article = Article::where('slug', $slug)->first();
         $attributes = $request->validated();
         $article->update($attributes);
+
+        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) {
+            return $item;
+        });
+
+        $tagsSynchronizer->sync($tags, $article);
 
         return redirect('/')->with('info', 'Статья успешно обновлена');
     }
