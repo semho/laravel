@@ -41,6 +41,22 @@
         {{ old('text', $article->text ?? '') }}
     </textarea>
 </div>
+<div class="form-group">
+    <label for="inputTags">Теги</label>
+    <input
+        type="text"
+        name="tags"
+        class="form-control"
+        id="inputTags"
+        placeholder="Введите теги"
+        @if (isset($article->tags))
+            value="{{ $article->tags->pluck('name')->implode(',') }}"
+        @else
+            value="{{ old('tags') }}"
+        @endif
+    >
+</div>
+
 <div class="form-group form-check">
     <input type="hidden" name="is_published" value="0" >
     <input

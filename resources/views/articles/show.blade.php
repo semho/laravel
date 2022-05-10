@@ -8,6 +8,9 @@
             {{ $article->name }}
             <a href="/articles/{{ $article->slug }}/edit">Редактировать</a>
         </h3>
+
+        @include('articles.tags', ['tags' => $article->tags])
+
         <p class="blog-post-meta">{{ $article->created_at->toFormattedDateString() }}</p>
         {{ $article->text }}
         <hr>
