@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticle;
-use Illuminate\Http\Request;
 use App\Models\Article;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use App\Models\Tag;
+use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
@@ -30,17 +25,17 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(StoreArticle $request)
+    public function store(StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
         $attributes = $request->validated();
 
-        Article::create($attributes);
+        $article = Article::create($attributes);
 
         $tags = collect(explode(',', request('tags')))->keyBy(function ($item) {
             return $item;
         });
-        
-        $this->sync($tags, $article);
+
+        $tagsSynchronizer->sync($tags, $article);
 
         return redirect('/')->with('info', 'Статья успешно создана');
     }
@@ -51,7 +46,7 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update($slug, StoreArticle $request)
+    public function update($slug, StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
 
         $article = Article::where('slug', $slug)->first();
@@ -62,7 +57,7 @@ class ArticlesController extends Controller
             return $item;
         });
 
-        $this->sync($tags, $article);
+        $tagsSynchronizer->sync($tags, $article);
 
         return redirect('/')->with('info', 'Статья успешно обновлена');
     }
@@ -72,33 +67,6 @@ class ArticlesController extends Controller
         $article = Article::where('slug', $slug)->first();
         $article->delete();
         return redirect('/')->with('info', 'Статья удалена');
-    }
-
-
-    /**
-     * @var $tags - коллекция тегов отправленная из формы
-     * @var $model - модель к которой нужно привязать теги
-     */
-    public function sync(Collection $tags, Article $model)
-    {
-
-        if (!$model->tags->isEmpty()) {
-            /** коллекция теги были привязанные к статье: */
-            $articleTags = $model->tags->keyBy('name');
-            /** массив с прежними id тегами, которые остались привязанные к статье */
-            $syncIds = $articleTags->intersectByKeys($tags)->pluck('id')->toArray();
-            /** коллекция ТОЛЬКО новых введенных тегов в форму */
-            $tags = $tags->diffKeys($articleTags);
-        }
-
-        /** каждый новый тег сравнимаем с БД, если нет создаем, затем id помещаем в массив с уже привязаными тегами */
-        foreach ($tags as $tag) {
-            $tag = Tag::firstOrCreate(['name' => $tag]);
-            $syncIds[] = $tag->id;
-        }
-
-        $model->tags()->sync($syncIds);
-
     }
 
 }
