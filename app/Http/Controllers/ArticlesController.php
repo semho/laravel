@@ -8,6 +8,7 @@ use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+
     public function index()
     {
         $articles = Article::with('tags')->latest()->get();
@@ -22,12 +23,17 @@ class ArticlesController extends Controller
 
     public function create()
     {
+        if (!auth()->check()) {
+            return redirect('/')->with('status', 'Для создания статьи авторизируйтесь!');
+        }
+
         return view('articles.create');
     }
 
     public function store(StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
         $attributes = $request->validated();
+        $attributes['owner_id'] = auth()->id();
 
         $article = Article::create($attributes);
 
@@ -42,7 +48,14 @@ class ArticlesController extends Controller
 
     public function edit($slug)
     {
+        if (!auth()->check()) {
+            return redirect('/')->with('status', 'Для редактирования статьи авторизируйтесь!');
+        }
+
         $article = Article::where('slug', $slug)->first();
+
+        $this->authorize('update', $article);
+
         return view('articles.edit', compact('article'));
     }
 
@@ -64,8 +77,15 @@ class ArticlesController extends Controller
 
     public function destroy($slug)
     {
+        if (!auth()->check()) {
+            return redirect('/')->with('status', 'Для удаления статьи авторизируйтесь!');
+        }
         $article = Article::where('slug', $slug)->first();
+
+        $this->authorize('delete', $article);
+
         $article->delete();
+
         return redirect('/')->with('info', 'Статья удалена');
     }
 
