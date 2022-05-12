@@ -13,6 +13,11 @@
                 {{Session::get('info')}}
             </div>
         @endif
+        @if (Session::has('status'))
+            <div class="alert alert-danger">
+                {{ Session::get('status') }}
+            </div>
+        @endif
 
         @foreach($articles as $article)
             @include('articles.item')

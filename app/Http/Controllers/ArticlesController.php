@@ -8,6 +8,10 @@ use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
 
     public function index()
     {
@@ -23,10 +27,6 @@ class ArticlesController extends Controller
 
     public function create()
     {
-        if (!auth()->check()) {
-            return redirect('/')->with('status', 'Для создания статьи авторизируйтесь!');
-        }
-
         return view('articles.create');
     }
 
@@ -48,10 +48,6 @@ class ArticlesController extends Controller
 
     public function edit($slug)
     {
-        if (!auth()->check()) {
-            return redirect('/')->with('status', 'Для редактирования статьи авторизируйтесь!');
-        }
-
         $article = Article::where('slug', $slug)->first();
 
         $this->authorize('update', $article);
@@ -77,9 +73,6 @@ class ArticlesController extends Controller
 
     public function destroy($slug)
     {
-        if (!auth()->check()) {
-            return redirect('/')->with('status', 'Для удаления статьи авторизируйтесь!');
-        }
         $article = Article::where('slug', $slug)->first();
 
         $this->authorize('delete', $article);
