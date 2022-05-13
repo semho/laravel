@@ -15,12 +15,15 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('owner_id');
             $table->string('name');
             $table->string('slug');
             $table->string('description');
             $table->text('text');
             $table->tinyInteger('is_published');
             $table->timestamps();
+
+            $table->foreign('owner_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

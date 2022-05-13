@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ContactsController;
@@ -17,7 +18,12 @@ Route::post('/contacts', [ContactsController::class, 'store']);
 
 Route::get('/admin/feedback', [AdminController::class, 'feedback']);
 
-Route::get('/about', function() {
+Route::get('/about', function () {
     return view('about.index');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
