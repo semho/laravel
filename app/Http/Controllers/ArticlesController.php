@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticle;
 use App\Models\Article;
 use App\Services\TagsSynchronizer;
+use App\Mail\ArticleCreated;
 
 class ArticlesController extends Controller
 {
@@ -16,12 +17,14 @@ class ArticlesController extends Controller
     public function index()
     {
         $articles = Article::with('tags')->latest()->get();
+
         return view('articles.index', compact('articles'));
     }
 
     public function show($slug)
     {
         $article = Article::where('slug', $slug)->first();
+
         return view('articles.show', compact('article'));
     }
 

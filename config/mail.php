@@ -15,6 +15,10 @@ return [
 
     'default' => env('MAIL_MAILER', 'smtp'),
 
+    /* Email for admin*/
+
+    'admin_mail' => 'admin@mail.ru',
+
     /*
     |--------------------------------------------------------------------------
     | Mailer Configurations
