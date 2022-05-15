@@ -16,7 +16,9 @@ Route::resource('/articles', ArticlesController::class);
 Route::get('/contacts', [ContactsController::class, 'index']);
 Route::post('/contacts', [ContactsController::class, 'store']);
 
+Route::get('/admin', [AdminController::class, 'index']);
 Route::get('/admin/feedback', [AdminController::class, 'feedback']);
+Route::get('/admin/articles', [AdminController::class, 'articles']);
 
 Route::get('/about', function () {
     return view('about.index');
