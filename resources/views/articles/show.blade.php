@@ -9,6 +9,11 @@
             @can('update', $article)
                 <a href="/articles/{{ $article->slug }}/edit">Редактировать</a>
             @endcan
+            @auth
+                @if(\App\Models\Role::isAdmin(Auth::user()))
+                    <a href="/admin">В Админ.раздел</a>
+                @endif
+            @endauth
         </h3>
 
         @include('articles.tags', ['tags' => $article->tags])

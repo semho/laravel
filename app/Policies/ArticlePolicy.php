@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Article;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -19,7 +20,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article)
     {
-        return  $article->owner_id == $user->id;
+        return  $article->owner_id == $user->id || Role::isAdmin($user);
     }
 
     /**
@@ -31,7 +32,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        return  $article->owner_id == $user->id;
+        return  $article->owner_id == $user->id || Role::isAdmin($user);
     }
 
 }
