@@ -32,7 +32,8 @@ class ArticlesController extends Controller
 
     public function show($slug)
     {
-        $article = Article::where([['slug', $slug]])->first();
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
         return view('articles.show', compact('article'));
     }
@@ -60,7 +61,8 @@ class ArticlesController extends Controller
 
     public function edit($slug)
     {
-        $article = Article::where('slug', $slug)->first();
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
         $this->authorize('update', $article);
 
@@ -69,8 +71,9 @@ class ArticlesController extends Controller
 
     public function update($slug, StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
-        $article = Article::where('slug', $slug)->first();
         $attributes = $request->validated();
         $article->update($attributes);
 
@@ -85,7 +88,8 @@ class ArticlesController extends Controller
 
     public function destroy($slug)
     {
-        $article = Article::where('slug', $slug)->first();
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
         $this->authorize('delete', $article);
 

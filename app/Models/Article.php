@@ -26,18 +26,23 @@ class Article extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function scopePublished($query)
+    public static function scopePublished($query)
     {
         return $query->where('is_published', 1);
     }
 
     public static function publishedAndUser()
     {
-        $articlesPublished = self::published();
-        $articlesNoPublishedUser = self::where([['owner_id', '=', auth()->id()], ['is_published', '=', 0]]);
+        $articlesPublished = static::published();
+        $articlesNoPublishedUser = static::where([['owner_id', '=', auth()->id()], ['is_published', '=', 0]]);
         $articles = $articlesPublished->unionAll($articlesNoPublishedUser);
 
         return $articles;
+    }
+
+    public static function getArticle($slug)
+    {
+        return static::where('slug', $slug)->first();
     }
 
 }
