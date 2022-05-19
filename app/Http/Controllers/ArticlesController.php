@@ -6,6 +6,9 @@ use App\Http\Requests\StoreArticle;
 use App\Models\Article;
 use App\Services\TagsSynchronizer;
 use App\Mail\ArticleCreated;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Role;
 
 class ArticlesController extends Controller
 {
@@ -16,14 +19,21 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        $articles = Article::with('tags')->latest()->get();
+        if (Auth::check() && Role::isAdmin(auth()->user())) {
+            $articles = Article::with('tags')->latest()->get();
+        } elseif (Auth::check()) {
+            $articles = Article::publishedAndUser()->latest()->get();
+        } else {
+            $articles = Article::published()->latest()->get();
+        }
 
         return view('articles.index', compact('articles'));
     }
 
     public function show($slug)
     {
-        $article = Article::where('slug', $slug)->first();
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
         return view('articles.show', compact('article'));
     }
@@ -51,7 +61,8 @@ class ArticlesController extends Controller
 
     public function edit($slug)
     {
-        $article = Article::where('slug', $slug)->first();
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
         $this->authorize('update', $article);
 
@@ -60,8 +71,9 @@ class ArticlesController extends Controller
 
     public function update($slug, StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
-        $article = Article::where('slug', $slug)->first();
         $attributes = $request->validated();
         $article->update($attributes);
 
@@ -76,7 +88,8 @@ class ArticlesController extends Controller
 
     public function destroy($slug)
     {
-        $article = Article::where('slug', $slug)->first();
+        $article = Article::getArticle($slug);
+        if (!$article) abort(404);
 
         $this->authorize('delete', $article);
 
