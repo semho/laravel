@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticle;
 use App\Models\Article;
+use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
 use App\Mail\ArticleCreated;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,7 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
+    public function store(StoreArticle $request, TagsSynchronizer $tagsSynchronizer, Pushall $pushall)
     {
         $attributes = $request->validated();
         $attributes['owner_id'] = auth()->id();
@@ -55,6 +56,8 @@ class ArticlesController extends Controller
         });
 
         $tagsSynchronizer->sync($tags, $article);
+
+        $pushall->send('Новая статья: ' . $attributes['name'], 'На сайте создана новая статья');
 
         return redirect('/')->with('info', 'Статья успешно создана');
     }

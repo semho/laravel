@@ -6,6 +6,7 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TagsController;
+use App\Http\Controllers\PushServiceController;
 
 Route::get('/', [ArticlesController::class, 'index']);
 
@@ -27,5 +28,8 @@ Route::get('/about', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('service', [PushServiceController::class, 'form']);
+Route::post('service', [PushServiceController::class, 'send']);
 
 require __DIR__.'/auth.php';
