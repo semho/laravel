@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $week = new DateTime('-7 days');
+
+        $week = new \DateTime('-7 days');
         $start = $week->format('Y-m-d');
         $today = date('Y-m-d');
         $schedule->command('articles:sending ' . $start . ' ' . $today . ' ')->weeklyOn(1, '8:00');
