@@ -18,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(\App\Services\TagsSynchronizer::class, function () {
             return new \App\Services\TagsSynchronizer;
         });
+
+        $this->app->singleton(\App\Services\Pushall::class, function () {
+            return new \App\Services\Pushall(config('app.pushall.api.key'), config('app.pushall.api.id'));
+        });
     }
 
     /**
