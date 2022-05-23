@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Events\ArticleDeleted;
 use App\Events\ArticleUpdated;
-use App\Events\ArticleCreated;
+use App\Events\ArticleCreatd;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +26,11 @@ class Article extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'article_id');
+    }
+
     public static function scopePublished($query)
     {
         return $query->where('is_published', 1);
@@ -44,5 +49,4 @@ class Article extends Model
     {
         return static::where('slug', $slug)->first();
     }
-
 }

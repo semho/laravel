@@ -21,7 +21,24 @@
         <p class="blog-post-meta">{{ $article->created_at->toFormattedDateString() }}</p>
         {{ $article->text }}
         <hr>
-        <a href="/">Вернуться к списку статей</a>
+        <a class = "blog-link-back" href="/">Вернуться к списку статей</a>
+
+        @auth
+            @include('layout.errors')
+
+            @if(Session::has('info'))
+                <div class="alert alert-success">
+                    {{Session::get('info')}}
+                </div>
+            @endif
+
+            @include('articles.addComment')
+        @endauth
+
+        @include('articles.comments', ['comments' => $comments])
+
+
+
     </div>
 
 @endsection

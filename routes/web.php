@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\PushServiceController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', [ArticlesController::class, 'index']);
 
@@ -31,5 +32,7 @@ Route::get('/dashboard', function () {
 
 Route::get('service', [PushServiceController::class, 'form']);
 Route::post('service', [PushServiceController::class, 'send']);
+
+Route::post('/articles/{slug}', [CommentController::class, 'store']);
 
 require __DIR__.'/auth.php';
