@@ -24,7 +24,7 @@ class CommentController extends Controller
         $attributes['owner_id'] = auth()->id();
         $attributes['article_id'] = Article::getArticle($slug)->id;
 
-        Comment::create($attributes);
+        $comment = Comment::create($attributes);
 
         return redirect('/articles/'. $slug)->with('info', 'Комментарий успешно добавлен');
     }

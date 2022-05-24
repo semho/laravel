@@ -18,16 +18,15 @@ class Comment extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public static function getComments($article)
     {
-        $comments = $article->comments()->get();
-
-        foreach ($comments as $comment) {
-            $comment['author'] = User::find($comment->owner_id)->name;
-        }
+        $comments = $article->comments()->get()->each(function ($item) {
+            $item['author'] = User::find($item->owner_id)->name;
+            return $item;
+        });
 
         return $comments;
     }

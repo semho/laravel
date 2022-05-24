@@ -23,6 +23,14 @@
         <hr>
         <a class = "blog-link-back" href="/">Вернуться к списку статей</a>
 
+        <hr>
+            @forelse($article->history as $item)
+                <p>{{ $item->email }} - {{ $item->pivot->created_at->diffForHumans() }} - {{ $item->pivot->before }} - {{ $item->pivot->after }}</p>
+            @empty
+                <p>Нет истории изменений</p>
+            @endforelse
+        <hr>
+
         @auth
             @include('layout.errors')
 
