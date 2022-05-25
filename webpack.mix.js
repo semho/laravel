@@ -15,4 +15,4 @@ mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'pub
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
-]);
+]).styles('resources/css/main.css', 'public/css/main.css');

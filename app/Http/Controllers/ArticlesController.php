@@ -10,6 +10,7 @@ use App\Mail\ArticleCreated;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Comment;
 
 class ArticlesController extends Controller
 {
@@ -34,9 +35,11 @@ class ArticlesController extends Controller
     public function show($slug)
     {
         $article = Article::getArticle($slug);
+        $comments = Comment::getComments($article);
+
         if (!$article) abort(404);
 
-        return view('articles.show', compact('article'));
+        return view('articles.show', compact('article', 'comments'));
     }
 
     public function create()

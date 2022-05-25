@@ -16,6 +16,7 @@
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
     <link href="/css/blog.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body>
