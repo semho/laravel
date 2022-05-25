@@ -27,10 +27,15 @@
 
     <main role="main" class="container">
         <div class="row">
-
             @yield('content')
 
-            @include('layout.sidebar')
+            @if(request()->is('/'))
+                @include('layout.sidebar')
+            @elseif(request()->is('articles'))
+                @include('layout.sidebar')
+            @elseif(request()->is('articles/*'))
+                @include('layout.sidebar')
+            @endif
 
         </div>
     </main>

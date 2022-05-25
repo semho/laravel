@@ -18,8 +18,11 @@ class UsersTableSeeder extends Seeder
         \App\Models\User::factory(2)->create()->each(function ($user) {
             //создаем 10 статей на каждого пользователя
             $article = \App\Models\Article::factory(10)->make(['owner_id' => $user->id]);
+            //создаем по 3 новости на каждого пользователя
+            $tiding = \App\Models\Tiding::factory(3)->make(['owner_id' => $user->id]);
             //добавяляем их к связи с пользователем
             $user->articles()->saveMany($article);
+            $user->tidings()->saveMany($tiding);
             //каждую статью перебираем
             $article->each(function ($article) {
                 //и к ней привязываем случайное количество тегов со случайными значениями

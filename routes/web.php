@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\PushServiceController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\TidingsController;
 
 Route::get('/', [ArticlesController::class, 'index']);
 
@@ -21,6 +22,7 @@ Route::post('/contacts', [ContactsController::class, 'store']);
 Route::get('/admin', [AdminController::class, 'index']);
 Route::get('/admin/feedback', [AdminController::class, 'feedback']);
 Route::get('/admin/articles', [AdminController::class, 'articles']);
+Route::get('/admin/tidings', [AdminController::class, 'tidings']);
 
 Route::get('/about', function () {
     return view('about.index');
@@ -34,5 +36,7 @@ Route::get('service', [PushServiceController::class, 'form']);
 Route::post('service', [PushServiceController::class, 'send']);
 
 Route::post('/articles/{slug}', [CommentController::class, 'store']);
+
+Route::resource('/tidings', TidingsController::class);
 
 require __DIR__.'/auth.php';
