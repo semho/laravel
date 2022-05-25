@@ -16,19 +16,19 @@ class AdminController extends Controller
 
     public function feedback()
     {
-        $notifications = Notification::latest()->get();
+        $notifications = Notification::select('*')->orderByDesc('id')->simplePaginate(20);
         return view('admin.feedback', compact('notifications'));
     }
 
     public function articles()
     {
-        $articles = Article::latest()->get();
+        $articles = Article::select('*')->orderByDesc('id')->simplePaginate(20);
         return view('admin.articles', compact('articles'));
     }
 
     public function tidings()
     {
-        $tidings = Tiding::latest()->get();
+        $tidings = Tiding::select('*')->orderByDesc('id')->simplePaginate(20);
         return view('admin.tidings', compact('tidings'));
     }
 }

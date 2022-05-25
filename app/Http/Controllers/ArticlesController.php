@@ -22,14 +22,14 @@ class ArticlesController extends Controller
     public function index()
     {
         if (Auth::check() && Role::isAdmin(auth()->user())) {
-            $articles = Article::with('tags')->latest()->get();
+            $articles = Article::with('tags');
         } elseif (Auth::check()) {
-            $articles = Article::publishedAndUser()->latest()->get();
+            $articles = Article::publishedAndUser();
         } else {
-            $articles = Article::published()->latest()->get();
+            $articles = Article::published();
         }
 
-        return view('articles.index', compact('articles'));
+        return view('articles.index', ['articles' => $articles->orderByDesc('id')->simplePaginate(10)]);
     }
 
     public function show($slug)

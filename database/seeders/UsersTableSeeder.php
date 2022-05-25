@@ -14,12 +14,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        //создаем 2 пользлователя и перебираем их
-        \App\Models\User::factory(2)->create()->each(function ($user) {
+        //создаем 5 пользлователей и перебираем их
+        \App\Models\User::factory(5)->create()->each(function ($user) {
             //создаем 10 статей на каждого пользователя
             $article = \App\Models\Article::factory(10)->make(['owner_id' => $user->id]);
-            //создаем по 3 новости на каждого пользователя
-            $tiding = \App\Models\Tiding::factory(3)->make(['owner_id' => $user->id]);
+            //создаем по 7 новостей на каждого пользователя
+            $tiding = \App\Models\Tiding::factory(7)->make(['owner_id' => $user->id]);
             //добавяляем их к связи с пользователем
             $user->articles()->saveMany($article);
             $user->tidings()->saveMany($tiding);

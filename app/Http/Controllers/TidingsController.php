@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\Tiding;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TidingsController extends Controller
 {
@@ -18,14 +19,14 @@ class TidingsController extends Controller
     public function index()
     {
         if (Auth::check() && Role::isAdmin(auth()->user())) {
-            $tidings = Tiding::latest()->get();
+            $tidings = Tiding::select('*');
         } elseif (Auth::check()) {
-            $tidings = Tiding::publishedAndUser()->latest()->get();
+            $tidings = Tiding::publishedAndUser();
         } else {
-            $tidings = Tiding::published()->latest()->get();
+            $tidings = Tiding::published();
         }
 
-        return view('tidings.index', compact('tidings'));
+        return view('tidings.index', ['tidings' => $tidings->orderByDesc('id')->simplePaginate(10)]);
     }
 
     public function show(Tiding $tiding)
