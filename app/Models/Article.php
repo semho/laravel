@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Events\ArticleDeleted;
 use App\Events\ArticleUpdated;
-use App\Events\ArticleCreatd;
+use App\Events\ArticleCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -31,7 +31,7 @@ class Article extends Model
         static::updating(function (Article $article) {
 
             $after = $article->getDirty();
-            
+
             $article->history()->attach(auth()->id(), [
                 'before' => json_encode(Arr::only($article->fresh()->toArray(), array_keys($after))),
                 'after' => json_encode($after),
