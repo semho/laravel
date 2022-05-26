@@ -16,6 +16,11 @@ class Tiding extends Model
         return 'slug';
     }
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
     public static function getTiding(Tiding $tiding)
     {
         return static::where('slug', $tiding->slug)->first();

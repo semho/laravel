@@ -3,7 +3,7 @@
 @section('title', 'Новость')
 
 @section('content')
-    <div class="col-md-12 blog-main">
+    <div class="col-md-8 blog-main">
         <h3 class="pb-3 mb-4 font-italic border-bottom">
             {{ $tiding->name }}
             @can('update', $tiding)
@@ -15,6 +15,8 @@
                 @endif
             @endauth
         </h3>
+
+        @include('tidings.tags', ['tags' => $tiding->tags])
 
         <p class="blog-post-meta">{{ $tiding->created_at->toFormattedDateString() }}</p>
         {{ $tiding->text }}

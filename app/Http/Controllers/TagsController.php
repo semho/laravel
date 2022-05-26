@@ -12,4 +12,11 @@ class TagsController extends Controller
 
         return view('articles.index', compact('articles'));
     }
+
+    public function tidings(Tag $tag)
+    {
+        $tidings = $tag->tidings()->with('tags')->orderByDesc('id')->simplePaginate(10);
+
+        return view('tidings.index', compact('tidings'));
+    }
 }

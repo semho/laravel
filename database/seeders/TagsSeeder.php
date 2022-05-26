@@ -13,7 +13,7 @@ class TagsSeeder extends Seeder
      */
     public function run()
     {
-        //создаем 5 тегов
-        \App\Models\Tag::factory(5)->create();
+        //создаем 10 тегов
+        \App\Models\Tag::factory(10)->create();
     }
 }

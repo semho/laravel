@@ -13,6 +13,7 @@ use App\Http\Controllers\TidingsController;
 Route::get('/', [ArticlesController::class, 'index']);
 
 Route::get('/articles/tags/{tag}', [TagsController::class, 'index']);
+Route::get('/tidings/tags/{tag}', [TagsController::class, 'tidings']);
 
 Route::resource('/articles', ArticlesController::class);
 

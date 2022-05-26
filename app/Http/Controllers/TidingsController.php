@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticle;
 use App\Models\Role;
 use App\Models\Tiding;
+use App\Services\TagsSynchronizer;
 use Illuminate\Support\Facades\Auth;
 
 class TidingsController extends Controller
@@ -41,13 +42,19 @@ class TidingsController extends Controller
         return view('tidings.create');
     }
 
-    public function store(StoreArticle $request)
+    public function store(StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
         $attributes = $request->validated();
         $attributes['owner_id'] = auth()->id();
 
         $tiding = Tiding::create($attributes);
         if (!$tiding) abort(404);
+
+        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) {
+            return $item;
+        });
+
+        $tagsSynchronizer->sync($tags, $tiding);
 
         return redirect('/tidings/')->with('info', 'Новость успешно создана');
     }
@@ -62,13 +69,19 @@ class TidingsController extends Controller
         return view('tidings.edit', compact('tiding'));
     }
 
-    public function update(Tiding $tiding, StoreArticle $request)
+    public function update(Tiding $tiding, StoreArticle $request, TagsSynchronizer $tagsSynchronizer)
     {
         $tiding = Tiding::getTiding($tiding);
         if (!$tiding) abort(404);
 
         $attributes = $request->validated();
         $tiding->update($attributes);
+
+        $tags = collect(explode(',', request('tags')))->keyBy(function ($item) {
+            return $item;
+        });
+
+        $tagsSynchronizer->sync($tags, $tiding);
 
         return redirect('/tidings/')->with('info', 'Новость успешно обновлена');
     }

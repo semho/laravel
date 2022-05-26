@@ -35,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('layout.sidebar', function ($view) {
             $view->with('tagsCloud', Tag::tagsCloud());
         });
+
+
+
         Blade::aliasComponent('admin.link', 'admin');
 
         Paginator::defaultSimpleView('pagination::simple-default');

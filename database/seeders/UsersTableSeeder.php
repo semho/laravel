@@ -24,9 +24,16 @@ class UsersTableSeeder extends Seeder
             $user->tidings()->saveMany($tiding);
             //каждую статью перебираем
             $article->each(function ($article) {
-                //и к ней привязываем случайное количество тегов со случайными значениями
+                //и к ней привязываем случайное количество тегов со случайными значениями от 0 до 5 записи
                 $article->tags()->attach(
-                    \App\Models\Tag::all()->random(rand(1,5))->pluck('id')->toArray()
+                    \App\Models\Tag::all()->take(5)->random(rand(1,5))->pluck('id')->toArray()
+                );
+            });
+            //каждую новость перебираем
+            $tiding->each(function ($tiding) {
+                //и к ней привязываем случайное количество тегов со случайными значениями от 5 до 10 записи
+                $tiding->tags()->attach(
+                    \App\Models\Tag::all()->skip(5)->take(5)->random(rand(1,5))->pluck('id')->toArray()
                 );
             });
         });
