@@ -9,7 +9,12 @@ class Comment extends Model
 {
     use HasFactory;
 
-    public $fillable = ['text', 'owner_id', 'article_id'];
+    public $fillable = ['commentable_type', 'commentable_id', 'text', 'owner_id'];
+
+    public function commentable()
+    {
+        return $this->morphTo();
+    }
 
     public function article()
     {

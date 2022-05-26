@@ -42,9 +42,9 @@
 
             @include('articles.addComment')
         @endauth
-
-        @include('articles.comments', ['comments' => $comments])
-
+        @if(@!empty($comments))
+            @include('articles.comments', ['comments' => $comments])
+        @endif
 
 
     </div>
