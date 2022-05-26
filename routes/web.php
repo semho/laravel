@@ -36,7 +36,8 @@ Route::get('/dashboard', function () {
 Route::get('service', [PushServiceController::class, 'form']);
 Route::post('service', [PushServiceController::class, 'send']);
 
-Route::post('/articles/{slug}', [CommentController::class, 'store']);
+Route::post('/articles/{slug}', [CommentController::class, 'storeArticle']);
+Route::post('/tidings/{slug}', [CommentController::class, 'storeTiding']);
 
 Route::resource('/tidings', TidingsController::class);
 

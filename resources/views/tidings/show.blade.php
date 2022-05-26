@@ -22,6 +22,21 @@
         {{ $tiding->text }}
         <hr>
         <a class = "blog-link-back" href="/tidings/">Вернуться к списку новостей</a>
+
+        @auth
+            @include('layout.errors')
+
+            @if(Session::has('info'))
+                <div class="alert alert-success">
+                    {{Session::get('info')}}
+                </div>
+            @endif
+
+            @include('tidings.addComment')
+        @endauth
+        @if(@!empty($comments))
+            @include('tidings.comments', ['comments' => $comments])
+        @endif
     </div>
 
 @endsection

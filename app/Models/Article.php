@@ -42,11 +42,6 @@ class Article extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class, 'article_id');
-    }
-
     public function history()
     {
         return $this->belongsToMany(User::class, 'article_histories')
@@ -70,5 +65,15 @@ class Article extends Model
     public static function getArticle($slug)
     {
         return static::where('slug', $slug)->first();
+    }
+
+    public function commentArticle()
+    {
+        $comments = $this->morphOne(Comment::class, 'commentable')->get()->each(function ($item) {
+            $item['author'] = User::find($item->owner_id)->name;
+            return $item;
+        });
+
+        return $comments;
     }
 }

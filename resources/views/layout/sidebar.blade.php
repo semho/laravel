@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-6">
                 <h6 class="font-italic">Новости</h6>
-                @include('tidings.tags', ['tags' => \App\Models\Tag::tagsCloudTidings()])
+                @include('tidings.tags', ['tags' => $tagsCloudTidings])
             </div>
         </div>
     </div>

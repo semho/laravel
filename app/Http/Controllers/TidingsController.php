@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\Tiding;
 use App\Services\TagsSynchronizer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Tests\Integration\Database\EloquentMorphToIsTest\Comment;
 
 class TidingsController extends Controller
 {
@@ -32,9 +33,11 @@ class TidingsController extends Controller
     {
         $tiding = Tiding::getTiding($tiding);
 
+        $comments = $tiding->commentTiding();
+
         if (!$tiding) abort(404);
 
-        return view('tidings.show', compact('tiding'));
+        return view('tidings.show', compact('tiding', 'comments'));
     }
 
     public function create()
