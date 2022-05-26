@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Notification;
-use Illuminate\Http\Request;
+use App\Models\Tiding;
 
 class AdminController extends Controller
 {
@@ -15,14 +15,19 @@ class AdminController extends Controller
 
     public function feedback()
     {
-        $notifications = Notification::latest()->get();
+        $notifications = Notification::select('*')->orderByDesc('id')->simplePaginate(20);
         return view('admin.feedback', compact('notifications'));
     }
 
     public function articles()
     {
-        $articles = Article::latest()->get();
+        $articles = Article::select('*')->orderByDesc('id')->simplePaginate(20);
         return view('admin.articles', compact('articles'));
     }
 
+    public function tidings()
+    {
+        $tidings = Tiding::select('*')->orderByDesc('id')->simplePaginate(20);
+        return view('admin.tidings', compact('tidings'));
+    }
 }

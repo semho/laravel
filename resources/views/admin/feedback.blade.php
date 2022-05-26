@@ -3,7 +3,7 @@
 @section('title', 'Список обращений')
 
 @section('content')
-    <div class="col-md-8 blog-main">
+    <div class="col-md-12 blog-main">
         <h3 class="pb-3 mb-4 font-italic border-bottom">
             Список обращений
         </h3>
@@ -29,10 +29,7 @@
             </tbody>
         </table>
 
-        <nav class="blog-pagination">
-            <a class="btn btn-outline-primary" href="#">Older</a>
-            <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
-        </nav>
+        {{ $notifications->links() }}
     </div>
 
 @endsection

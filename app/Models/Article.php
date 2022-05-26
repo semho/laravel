@@ -8,9 +8,6 @@ use App\Events\ArticleCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use function PHPUnit\TestFixture\func;
-use function Webmozart\Assert\Tests\StaticAnalysis\string;
 
 class Article extends Model
 {

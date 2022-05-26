@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,5 +36,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('tagsCloud', Tag::tagsCloud());
         });
         Blade::aliasComponent('admin.link', 'admin');
+
+        Paginator::defaultSimpleView('pagination::simple-default');
     }
 }

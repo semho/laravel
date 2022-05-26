@@ -6,9 +6,7 @@ use App\Http\Requests\StoreArticle;
 use App\Models\Article;
 use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
-use App\Mail\ArticleCreated;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Role;
 use App\Models\Comment;
 
@@ -22,14 +20,14 @@ class ArticlesController extends Controller
     public function index()
     {
         if (Auth::check() && Role::isAdmin(auth()->user())) {
-            $articles = Article::with('tags')->latest()->get();
+            $articles = Article::with('tags');
         } elseif (Auth::check()) {
-            $articles = Article::publishedAndUser()->latest()->get();
+            $articles = Article::publishedAndUser();
         } else {
-            $articles = Article::published()->latest()->get();
+            $articles = Article::published();
         }
 
-        return view('articles.index', compact('articles'));
+        return view('articles.index', ['articles' => $articles->orderByDesc('id')->simplePaginate(10)]);
     }
 
     public function show($slug)

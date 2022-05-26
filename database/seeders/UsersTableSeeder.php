@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use function PHPUnit\TestFixture\func;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,12 +13,15 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        //создаем 2 пользлователя и перебираем их
-        \App\Models\User::factory(2)->create()->each(function ($user) {
+        //создаем 5 пользлователей и перебираем их
+        \App\Models\User::factory(5)->create()->each(function ($user) {
             //создаем 10 статей на каждого пользователя
             $article = \App\Models\Article::factory(10)->make(['owner_id' => $user->id]);
+            //создаем по 7 новостей на каждого пользователя
+            $tiding = \App\Models\Tiding::factory(7)->make(['owner_id' => $user->id]);
             //добавяляем их к связи с пользователем
             $user->articles()->saveMany($article);
+            $user->tidings()->saveMany($tiding);
             //каждую статью перебираем
             $article->each(function ($article) {
                 //и к ней привязываем случайное количество тегов со случайными значениями

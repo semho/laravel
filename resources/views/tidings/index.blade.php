@@ -1,12 +1,12 @@
 @extends('layout.master')
 
-@section('title', 'Главная страница')
+@section('title', 'Новости')
 
 @section('content')
 
-    <div class="col-md-8 blog-main">
+    <div class="col-md-12 blog-main">
         <h3 class="pb-3 mb-4 font-italic border-bottom">
-            Список статей
+            Список новостей
         </h3>
         @if(Session::has('info'))
             <div class="alert alert-success">
@@ -19,11 +19,11 @@
             </div>
         @endif
 
-        @foreach($articles as $article)
-            @include('articles.item')
+        @foreach($tidings as $tiding)
+            @include('tidings.item')
         @endforeach
 
-        {{ $articles->links() }}
+        {{ $tidings->links() }}
 
     </div><!-- /.blog-main -->
 

@@ -3,9 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\ArticleDeleted;
-use App\Mail\ArticleCreated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendArticleDeletedNotification
 {
