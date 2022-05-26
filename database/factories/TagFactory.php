@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use function Webmozart\Assert\Tests\StaticAnalysis\uniqueValues;
 
 class TagFactory extends Factory
 {

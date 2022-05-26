@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreArticle;
 use App\Models\Article;
 use App\Models\Comment;
-use App\Services\TagsSynchronizer;
-use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {

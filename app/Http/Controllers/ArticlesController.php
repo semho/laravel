@@ -6,9 +6,7 @@ use App\Http\Requests\StoreArticle;
 use App\Models\Article;
 use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
-use App\Mail\ArticleCreated;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Role;
 use App\Models\Comment;
 

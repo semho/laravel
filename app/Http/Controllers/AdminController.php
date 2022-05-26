@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Notification;
 use App\Models\Tiding;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {

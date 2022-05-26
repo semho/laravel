@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use function PHPUnit\TestFixture\func;
 
 class UsersTableSeeder extends Seeder
 {

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\Pushall;
-use Illuminate\Http\Request;
 
 class PushServiceController extends Controller
 {

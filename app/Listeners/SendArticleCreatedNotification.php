@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Mail\ArticleCreated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendArticleCreatedNotification
 {
