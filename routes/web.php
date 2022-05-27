@@ -9,6 +9,7 @@ use App\Http\Controllers\TagsController;
 use App\Http\Controllers\PushServiceController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TidingsController;
+use App\Http\Controllers\StatisticsController;
 
 Route::get('/', [ArticlesController::class, 'index']);
 
@@ -40,5 +41,7 @@ Route::post('/articles/{slug}', [CommentController::class, 'storeArticle']);
 Route::post('/tidings/{slug}', [CommentController::class, 'storeTiding']);
 
 Route::resource('/tidings', TidingsController::class);
+
+Route::get('/statistics', [StatisticsController::class, 'index']);
 
 require __DIR__.'/auth.php';

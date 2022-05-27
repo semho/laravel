@@ -29,7 +29,9 @@
         <div class="row">
             @yield('content')
 
-            @include('layout.sidebar')
+            @if(!Request::is('statistics'))
+                @include('layout.sidebar')
+            @endif
 
         </div>
     </main>
