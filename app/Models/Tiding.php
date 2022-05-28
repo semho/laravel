@@ -16,9 +16,19 @@ class Tiding extends Model
         return 'slug';
     }
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
     public static function getTiding(Tiding $tiding)
     {
         return static::where('slug', $tiding->slug)->first();
+    }
+
+    public static function getTidingBySlug($slug)
+    {
+        return static::where('slug', $slug)->first();
     }
 
     public static function scopePublished($query)
@@ -34,4 +44,15 @@ class Tiding extends Model
 
         return $tidings;
     }
+
+    public function commentTiding()
+    {
+        $comments = $this->morphOne(Comment::class, 'commentable')->get()->each(function ($item) {
+            $item['author'] = User::find($item->owner_id)->name;
+            return $item;
+        });
+
+        return $comments;
+    }
+
 }

@@ -29,11 +29,7 @@
         <div class="row">
             @yield('content')
 
-            @if(request()->is('/'))
-                @include('layout.sidebar')
-            @elseif(request()->is('articles'))
-                @include('layout.sidebar')
-            @elseif(request()->is('articles/*'))
+            @if(!Request::is('statistics'))
                 @include('layout.sidebar')
             @endif
 

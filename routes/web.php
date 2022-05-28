@@ -9,10 +9,12 @@ use App\Http\Controllers\TagsController;
 use App\Http\Controllers\PushServiceController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TidingsController;
+use App\Http\Controllers\StatisticsController;
 
 Route::get('/', [ArticlesController::class, 'index']);
 
 Route::get('/articles/tags/{tag}', [TagsController::class, 'index']);
+Route::get('/tidings/tags/{tag}', [TagsController::class, 'tidings']);
 
 Route::resource('/articles', ArticlesController::class);
 
@@ -35,8 +37,11 @@ Route::get('/dashboard', function () {
 Route::get('service', [PushServiceController::class, 'form']);
 Route::post('service', [PushServiceController::class, 'send']);
 
-Route::post('/articles/{slug}', [CommentController::class, 'store']);
+Route::post('/articles/{slug}', [CommentController::class, 'storeArticle']);
+Route::post('/tidings/{slug}', [CommentController::class, 'storeTiding']);
 
 Route::resource('/tidings', TidingsController::class);
+
+Route::get('/statistics', [StatisticsController::class, 'index']);
 
 require __DIR__.'/auth.php';

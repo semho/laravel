@@ -33,9 +33,8 @@ class ArticlesController extends Controller
     public function show($slug)
     {
         $article = Article::getArticle($slug);
-        $comments = Comment::getComments($article);
-
         if (!$article) abort(404);
+        $comments = $article->commentArticle();
 
         return view('articles.show', compact('article', 'comments'));
     }

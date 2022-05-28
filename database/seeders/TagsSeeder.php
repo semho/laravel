@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Tag;
 
 class TagsSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class TagsSeeder extends Seeder
      */
     public function run()
     {
-        //создаем 5 тегов
-        \App\Models\Tag::factory(5)->create();
+        //создаем 10 тегов
+        Tag::factory(10)->create();
     }
 }
