@@ -8,6 +8,7 @@ use App\Events\ArticleCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
@@ -75,5 +76,74 @@ class Article extends Model
         });
 
         return $comments;
+    }
+
+    //максимальное созданное количесво статей одним пользователем
+    public static function getMaxCountArticlesUser()
+    {
+        return DB::table('articles')
+            ->join('users', 'users.id', '=', 'articles.owner_id')
+            ->select('owner_id', 'users.name', DB::raw('count(*) as total'))
+            ->groupBy('owner_id', 'users.name')
+            ->orderBy('total', 'desc')
+            ->first();
+    }
+
+    //сортировка статей по длине названия
+    public static function getSortArticlesByLengthName()
+    {
+        return DB::table('articles')
+            ->select('name', 'slug', DB::raw('max(length(name)) as max'))
+            ->groupBy('name', 'slug')
+            ->orderBy('max', 'desc')->get();
+    }
+
+    //максимальная длинна названия статьи
+    public static function getArticleMaxLengthName()
+    {
+        return static::getSortArticlesByLengthName()->first();
+    }
+
+    //минимальная длинна названия статьи
+    public static function getArticleMinLengthName()
+    {
+        return static::getSortArticlesByLengthName()->last();
+    }
+
+    //активные пользователи
+    public static function getActiveUsers()
+    {
+        return DB::table('articles')
+            ->join('users', 'users.id', '=', 'articles.owner_id')
+            ->select('owner_id', 'users.name', DB::raw('count(*) as total'))
+            ->groupBy('owner_id', 'users.name')
+            ->having('total', '>', 1);
+    }
+
+    //среднее количество статей
+    public static function getAvgCountArticles()
+    {
+        return (int)round(static::getActiveUsers()->avg('total'));
+    }
+
+    //выбираем статьи, которые хоть раз обновлялись и забираем статьию у которой больше всех обновлений
+    public static function getMostUpdatedArticle()
+    {
+        return DB::table('articles')
+            ->join('article_histories', 'article_histories.article_id', '=', 'articles.id')
+            ->select('articles.name', 'articles.slug', DB::raw('count(articles.name) as max'))
+            ->groupBy('articles.name', 'articles.slug')
+            ->orderBy('max', 'desc')->first();
+    }
+
+    //самая обсуждаемая статья
+    public static function getMostDiscussedArticle()
+    {
+        return DB::table('articles')
+            ->join('comments', 'comments.commentable_id', '=', 'articles.id')
+            ->select('articles.name', 'articles.slug', 'comments.commentable_type', DB::raw('count(comments.commentable_id) as max'))
+            ->groupBy('articles.name', 'articles.slug', 'comments.commentable_type')
+            ->having('comments.commentable_type', 'App\Models\Article')
+            ->orderBy('max', 'desc')->first();
     }
 }

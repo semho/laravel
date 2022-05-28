@@ -20,8 +20,10 @@ class CommentController extends Controller
             'text' => 'required|max:200',
         ]);
         $attributes['owner_id'] = auth()->id();
-        $attributes['commentable_type'] = 'App\Models\Article';
-        $attributes['commentable_id'] = Article::getArticle($slug)->id;
+        $attributes['commentable_type'] = Article::class;
+        $is_article = Article::getArticle($slug);
+        if (!$is_article) abort(404);
+        $attributes['commentable_id'] = $is_article->id;
 
         Comment::create($attributes);
 
@@ -30,13 +32,14 @@ class CommentController extends Controller
 
     public function storeTiding($slug)
     {
-
         $attributes = request()->validate([
             'text' => 'required|max:200',
         ]);
         $attributes['owner_id'] = auth()->id();
-        $attributes['commentable_type'] = 'App\Models\Tiding';
-        $attributes['commentable_id'] = Tiding::getTidingBySlug($slug)->id;
+        $attributes['commentable_type'] = Tiding::class;
+        $is_tiding = Tiding::getTidingBySlug($slug);
+        if (!$is_tiding) abort(404);
+        $attributes['commentable_id'] = $is_tiding->id;
 
         Comment::create($attributes);
 
