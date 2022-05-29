@@ -8,7 +8,6 @@ use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Role;
-use App\Models\Comment;
 
 class ArticlesController extends Controller
 {

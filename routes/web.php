@@ -25,6 +25,9 @@ Route::get('/admin', [AdminController::class, 'index']);
 Route::get('/admin/feedback', [AdminController::class, 'feedback']);
 Route::get('/admin/articles', [AdminController::class, 'articles']);
 Route::get('/admin/tidings', [AdminController::class, 'tidings']);
+Route::get('/admin/reports', [AdminController::class, 'reports']);
+Route::get('/admin/reports_total', [AdminController::class, 'total']);
+Route::post('/admin/reports_total', [AdminController::class, 'totalSend']);
 
 Route::get('/about', function () {
     return view('about.index');
