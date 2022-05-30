@@ -24,6 +24,7 @@
                 <a class="p-2 text-muted" href="/admin/articles">Управление статьями</a>
                 <a class="p-2 text-muted" href="/admin/tidings">Управление новостями</a>
                 <a class="p-2 text-muted" href="/admin/feedback">Список обращений</a>
+                <a class="p-2 text-muted" href="/admin/reports">Отчеты</a>
             </nav>
         </div>
 
