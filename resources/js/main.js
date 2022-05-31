@@ -36,4 +36,72 @@ document.addEventListener('DOMContentLoaded', function () {
             inputSlug.value = translit(inputName.value);
         });
     }
+
+
+    const formReport = document.getElementById('formReport');
+    if (formReport) {
+        formReport.addEventListener('submit', sendReport);
+    }
 });
+
+async function sendReport() {
+    event.preventDefault();
+    const data = {
+        news: document.getElementById('news').checked,
+        articles: document.getElementById('articles').checked,
+        comments: document.getElementById('comments').checked,
+        tags: document.getElementById('tags').checked,
+        users: document.getElementById('users').checked,
+    };
+    const response = await fetch('/admin/reports_total', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+        },
+        body: JSON.stringify(data)
+    });
+
+    //получаем ответ
+    const result = await response.json();
+    removeMessage();
+
+    //обработка ответа
+    if (result.success) {
+       createReport();
+    } else if (result.message) {
+        messageWarning(result.message);
+    } else {
+        messageWarning('ошибка запроса');
+    }
+
+}
+
+function createReport() {
+    document.getElementById('formReport').remove();
+    const report = document.createElement('div');
+    report.classList.add(
+        'report',
+        'p-3',
+    );
+    document.querySelector('h3').after(report);
+}
+
+function removeMessage() {
+    const oldMessage = document.querySelector('.alert-danger');
+    if (oldMessage) {
+        oldMessage.remove();
+    }
+}
+
+function messageWarning(message) {
+
+    const div = document.createElement('div');
+    div.classList.add(
+        'alert',
+        'alert-danger',
+    );
+    div.textContent = message;
+
+    document.querySelector('h3').after(div);
+}

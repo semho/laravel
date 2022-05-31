@@ -85,6 +85,8 @@ class ArticlesController extends Controller
 
         $tagsSynchronizer->sync($tags, $article);
 
+        event(new \App\Events\ArticleUpdatedBySocketForAdmin($article, auth()->user()));
+
         return redirect('/')->with('info', 'Статья успешно обновлена');
     }
 
