@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+laravel-echo-server.lock
 /vendor
 .env
 .env.backup

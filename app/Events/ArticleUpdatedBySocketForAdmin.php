@@ -14,7 +14,9 @@ use App\Models\Article;
 
 class ArticleUpdatedBySocketForAdmin implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable,
+        InteractsWithSockets,
+        SerializesModels;
 
     public $article;
     public $user;

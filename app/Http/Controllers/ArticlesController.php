@@ -8,6 +8,7 @@ use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Role;
+use App\Events\ArticleUpdatedBySocketForAdmin;
 
 class ArticlesController extends Controller
 {
@@ -85,7 +86,7 @@ class ArticlesController extends Controller
 
         $tagsSynchronizer->sync($tags, $article);
 
-        event(new \App\Events\ArticleUpdatedBySocketForAdmin($article, auth()->user()));
+        event(new ArticleUpdatedBySocketForAdmin($article, auth()->user()));
 
         return redirect('/')->with('info', 'Статья успешно обновлена');
     }

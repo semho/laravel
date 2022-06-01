@@ -11,6 +11,7 @@ use App\Models\Tiding;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\TotalReport;
+use App\Events\ReportGenerated;
 
 class AdminController extends Controller
 {
@@ -99,7 +100,7 @@ class AdminController extends Controller
             $this->data['result'] = $dataNew;
 
             TotalReport::dispatchSync(Auth::user(), $dataNew);
-            event(new \App\Events\ReportGenerated($dataNew, auth()->user()));
+            event(new ReportGenerated($dataNew, auth()->user()));
         }
 
         //отправляем ответ в виде json

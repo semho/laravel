@@ -51,8 +51,7 @@ class Article extends Model
 
     public static function lastChangeInHistory($article)
     {
-        return DB::table('article_histories')
-            ->where('article_histories.article_id', $article->id)->latest()->first();
+        return static::find($article->id)->history()->get()->sortBy('pivot_updated_at')->last()->pivot->toArray();
     }
 
     public static function scopePublished($query)

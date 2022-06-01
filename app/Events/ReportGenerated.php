@@ -14,7 +14,9 @@ use App\Models\User;
 
 class ReportGenerated implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable,
+        InteractsWithSockets,
+        SerializesModels;
 
     public $data;
     public $user;

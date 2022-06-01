@@ -48,4 +48,3 @@ Route::resource('/tidings', TidingsController::class);
 Route::get('/statistics', [StatisticsController::class, 'index']);
 
 require __DIR__.'/auth.php';
-

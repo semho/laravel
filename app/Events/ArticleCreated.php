@@ -8,7 +8,8 @@ use App\Models\Article;
 
 class ArticleCreated
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable,
+        SerializesModels;
 
     public $article;
     /**
