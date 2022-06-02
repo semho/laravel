@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\Tiding;
 use App\Services\TagsSynchronizer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Tests\Integration\Database\EloquentMorphToIsTest\Comment;
 
 class TidingsController extends Controller
@@ -18,15 +19,13 @@ class TidingsController extends Controller
 
     public function index()
     {
-        if (Auth::check() && Role::isAdmin(auth()->user())) {
-            $tidings = Tiding::select('*');
-        } elseif (Auth::check()) {
-            $tidings = Tiding::publishedAndUser();
-        } else {
-            $tidings = Tiding::published();
+        if (request()->getRequestUri() != '/') {
+            Cache::tags(['tidings'])->flush();
         }
 
-        return view('tidings.index', ['tidings' => $tidings->orderByDesc('id')->simplePaginate(10)]);
+        $tidings = Tiding::getTidings();
+
+        return view('tidings.index', ['tidings' => $tidings]);
     }
 
     public function show(Tiding $tiding)
@@ -85,6 +84,8 @@ class TidingsController extends Controller
         });
 
         $tagsSynchronizer->sync($tags, $tiding);
+
+        Cache::tags('tiding' . $tiding->slug)->flush();
 
         return redirect('/tidings/')->with('info', 'Новость успешно обновлена');
     }
