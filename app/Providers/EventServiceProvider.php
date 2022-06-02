@@ -35,9 +35,6 @@ class EventServiceProvider extends ServiceProvider
         ArticleDeleted::class => [
             SendArticleDeletedNotification::class
         ],
-        ReportGenerated::class => [
-            SendReport::class
-        ],
     ];
 
     /**

@@ -37,12 +37,6 @@ class TotalReport implements ShouldQueue
      */
     public function handle()
     {
-        isset($this->data['news']) ? $this->data['news'] = "Новостей: " . Tiding::count() : "";
-        isset($this->data['articles']) ? $this->data['articles'] = "Статей: " . Article::count() : "";
-        isset($this->data['comments']) ? $this->data['comments'] = "Комментарий: " . Comment::count() : "";
-        isset($this->data['tags']) ? $this->data['tags']= "Тегов: " . Tag::count() : "";
-        isset($this->data['users']) ? $this->data['users'] = "Пользователей: " . User::count() : "";
-
         //отправляем отчет администратору на email
         \Mail::to($this->admin->email)->send(
             new Report($this->data, $this->getCsv())

@@ -8,7 +8,8 @@ use Illuminate\Queue\SerializesModels;
 
 class ArticleDeleted
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable,
+        SerializesModels;
 
     public $article;
     /**

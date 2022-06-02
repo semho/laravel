@@ -7,15 +7,20 @@
         <h3 class="pb-3 mb-4 font-italic border-bottom">
             Итого
         </h3>
-        <p>
-            Выберите пункты, на которые требуется сформировать отчет
-        </p>
         @if (Session::has('status'))
             <div class="alert alert-danger">
                 {{ Session::get('status') }}
             </div>
         @endif
-        <form action="/admin/reports_total" method="post" class="mb-3">
+        @if (Session::has('info'))
+            <div class="alert alert-success">
+                {{ Session::get('info') }}
+            </div>
+        @endif
+        <form id="formReport" action="/admin/reports_total" method="post" class="mb-3">
+            <p>
+                Выберите пункты, на которые требуется сформировать отчет
+            </p>
             @csrf
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex align-items-center custom-control custom-checkbox pl-5">

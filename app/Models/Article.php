@@ -49,6 +49,11 @@ class Article extends Model
             ->withPivot(['before', 'after'])->withTimestamps();
     }
 
+    public static function lastChangeInHistory($article)
+    {
+        return static::find($article->id)->history()->get()->sortBy('pivot_updated_at')->last()->pivot->toArray();
+    }
+
     public static function scopePublished($query)
     {
         return $query->where('is_published', 1);
