@@ -6,9 +6,8 @@ use App\Http\Requests\StoreArticle;
 use App\Models\Article;
 use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Role;
 use App\Events\ArticleUpdatedBySocketForAdmin;
+use Illuminate\Support\Facades\Cache;
 
 class ArticlesController extends Controller
 {
@@ -19,15 +18,13 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        if (Auth::check() && Role::isAdmin(auth()->user())) {
-            $articles = Article::with('tags');
-        } elseif (Auth::check()) {
-            $articles = Article::publishedAndUser();
-        } else {
-            $articles = Article::published();
+        if (request()->getRequestUri() != '/') {
+            Cache::tags(['articles'])->flush();
         }
 
-        return view('articles.index', ['articles' => $articles->orderByDesc('id')->simplePaginate(10)]);
+        $articles = Article::getArticles();
+
+        return view('articles.index', ['articles' => $articles]);
     }
 
     public function show($slug)
@@ -87,6 +84,8 @@ class ArticlesController extends Controller
         $tagsSynchronizer->sync($tags, $article);
 
         event(new ArticleUpdatedBySocketForAdmin($article, auth()->user()));
+
+        Cache::tags('article_' . $slug)->flush();
 
         return redirect('/')->with('info', 'Статья успешно обновлена');
     }

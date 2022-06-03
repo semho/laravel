@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Tiding;
+use Illuminate\Support\Facades\Cache;
 
 class CommentController extends Controller
 {
@@ -26,6 +27,8 @@ class CommentController extends Controller
         $attributes['commentable_id'] = $is_article->id;
 
         Comment::create($attributes);
+
+        Cache::tags('getMostDiscussedArticle' . $slug)->flush();
 
         return redirect('/articles/'. $slug)->with('info', 'Комментарий успешно добавлен');
     }
